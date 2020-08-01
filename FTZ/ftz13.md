@@ -43,6 +43,10 @@ main(int argc, char *argv[]) # 프로그램 실행과 동시에 입력 전달
 }
 
 ```  
+이 문제에는 **스택 가드**가 있다. 스택가드란 우리가 level12와 같이 bof 공격으로 ret을 변조하게 되면 당연히 스택가드 영역도 함께 다른 값으로 변조될 수 밖에 없다. 그러므로 스택가드에 저장되어있는 값이 바뀌었다는 것은 bof 공격이 일어났다는 것을 의미하고, 이 사실이 확인되면 프로세스 실행을 차단해서 공격을 방어할 수 있다.  
+
+따라서 우리는 스택가드 영역을 변조하지 않고 공격해야한다!!  
+
 2. strcpy(buf, argv[1])에서 BOF 공격이 가능해보인다! 공격을 위해 우선 스택구조를 파악해보자  
 
 
@@ -164,6 +168,14 @@ ex. 리버스쉘(윈도우 cmd로 대상 시스템에서 공격자에게 역으�
 
 10. 페이로드를 실행시키니 쉘이 성공적으로 떨어진다. 그리고 my-pass 명령어를 통해 level14의 패스워드를 얻는다.  
 11. 패스워드는 "what that nigga want?"  
+
+### 다른 공격 코드 예시  
+* 기본적인 BOF(nop sled 이용) : NOP(500) + shellcode(25) + NOP(511) + 0x1234567(4) + NOP(12) + RET(4)  
+* 환경변수를 이용한 BOF : NOP(1036) + 0x1234567(4) + NOP(12) + RET(4)  
+* RTL: NOP(1036) + 0x1234567(4) + NOP(12) + system(4) + exit(4) + /bin/sh(4)  
+* ROP(Return Oriented Programming) 공격이 가능한 문제라고 한다! 나중에 한번 해보자!  
+ROP은 NX bit와 ASLR(Address Space Layout Randomize) 같은 메모리 보호 기법을 우회하기 위한 공격 기법으로, RTL, RTL chaining, GOT overwrite 기법을 활용하여 취약한 프로그램 내부의 기계어 코드들을 이용해 콜스택을 제어하는 공격 기법  
+[출처](https://d4m0n.tistory.com/84)
 
 ## 그 외  
 ### DWORD PTR  
