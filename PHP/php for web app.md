@@ -75,3 +75,32 @@ ex. http://127.0.0.1/index.php?title=php&author=kim
   </body>
 </html>
 ```  
+
+## 파일 모듈화  
+자주 사용하는 특정 코드를 외부 php 파일로 분리하여 그 파일을 코드 안으로 불러와서 사용하는 것  
+* 자주 사용되는 코드를 별도의 파일로 만들어서 필요할 때마다 재활용할 수 있다.  
+* 코드를 개선하면 이를 사용하고 있는 모든 애플리케이션의 동작이 개선된다.  
+* 코드 수정 시에 필요한 로직을 빠르게 찾을 수 있다.  
+* 필요한 로직만을 로드해서 메모리의 낭비를 줄일 수 있다.  
+
+즉, 코드의 재활용성을 높이고, 유지보수를 쉽게할 수 있다.  
+
+### 로드 방법
+PHP에서는 필요에 따라서 다른 PHP 파일을 코드 안으로 불러와서 사용할 수 있다.  
+* include  
+include는 외부의 php 파일을 로드할 때 사용하는 명령이다.  
+
+```
+<?php
+include 'greeting.php';
+echo welcome();
+?>
+```  
+
+* include_once  
+* require  
+* require_once  
+
+> include와 require의 차이점은 존재하지 않는 파일의 로드를 시도했을 때 include가 warning를 일으킨다면 require는 fatal error를 일으킨다는 점이다. fatal error는 warning 보다 심각한 에러이기 때문에 require가 include 보다 엄격한 로드 방법이라고 할 수 있다.  
+
+> _once라는 접미사가 붙은 것은 파일을 로드 할 때 단 한번만 로드하면 된다는 의미다.  
