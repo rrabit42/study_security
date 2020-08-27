@@ -124,6 +124,39 @@ https://www.php.net/manual/en/language.types.intro.php
 
 ## 함수  
 
+```
+function basic(){
+    print("Lorem ipsum dolor1<br>");
+    print("Lorem ipsum dolor2<br>");
+}
+
+basic();  // 함수 호출
+basic();
+basic();
+```  
+```
+function sum($left, $right){
+  print($left+$right);
+  print("<br>");
+}
+sum(2,4);
+sum(4,6);
+```  
+
+```
+function cancat ($str1, $str2) {
+	return $str1 + $str2;
+}
+
+cancat("parameter", "argument");
+```  
+
+|단어|번역|의미|예시|
+|:---:|:---:|:---:|:---:|
+|Parameter|매개변수|함수와 메서드 입력 변수(Variable) 명|str1, str2|
+|Argument|전달인자, 인자|함수와 메서드의 입력 값(Value)|"parameter", "argument"|
+
+
 > php는 웹을 위한 언어이기 때문에 웹에서 사용할만한 여러가지 기능을 제공  
 > 따라서 줄바꿈 <br> 태그 대신 nl2br()함수를 사용할 수 있다.  
 > ```nl2br() : Inserts HTML line breaks before all newlines in a string```  
