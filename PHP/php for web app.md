@@ -46,3 +46,32 @@ php app의 입력으로서 URL 파라미터(querystring, 쿼리스트링)를 사
   </body>
 </html>
 ```  
+
+## form  
+### GET 방식  
+* 메세지 header를 통해서만 전달  
+* request라인의 URI 필드를 통해서 전달("?"를 구분자로 사용, 변수명과 값을 쌍으로 전달, 여러 데이터는 "&"로 구분)  
+ex. http://127.0.0.1/index.php?title=php&author=kim  
+* 전달할 수 있는 데이터 크기에 한계가 있음(헤더의 크기를 넘어갈 수 없다.)  
+* 전달하려는 데이터가 외부에 노출되어서 보안상 취약하다.  
+* ```Value = $_GET["변수명"]```  
+
+### POST 방식  
+* 메세지 body를 통해서 전달  
+* 전달하려는 데이터의 크기 제한이 없다. 따라서 복잡한 형태의 자료를 전달할 때 유용하다.(스트림 형태로 전송되기 때문)  
+* 전달하려는 데이터가 외부에 쉽게 노출되지 않는다.(GET과 달리 입력한 데이터가 URL 상에 보이지 않는다)  
+* 반드시 form tag와 함께 쓰인다.  
+* ```Value = $_POST["변수명"]```  
+
+```
+<!doctype html>
+<html>
+  <body>
+    <form action="form.php" method="post">
+      <p><input type="text" name="title" placeholder="Title"></p>
+      <p><textarea name="description"></textarea></p>
+      <p><input type="submit"></p>
+    </form>
+  </body>
+</html>
+```  
