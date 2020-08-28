@@ -104,3 +104,54 @@ echo welcome();
 > include와 require의 차이점은 존재하지 않는 파일의 로드를 시도했을 때 include가 warning를 일으킨다면 require는 fatal error를 일으킨다는 점이다. fatal error는 warning 보다 심각한 에러이기 때문에 require가 include 보다 엄격한 로드 방법이라고 할 수 있다.  
 
 > _once라는 접미사가 붙은 것은 파일을 로드 할 때 단 한번만 로드하면 된다는 의미다.  
+
+## XSS(Cross site scripting)  
+
+PHP에서 XSS를 방지하기 위한 두 가지 함수가 있다.  
+사용자가 값을 입력하는 부분을 모두 이 함수들로 감싸주면된다.  
+
+* htmlspecialchars() : 꺽쇠(<,>)를 html tag로 해석하지 않고, html에서 꺽쇠를 그대로 화면에 출력해주는 &lt, &gt로 해석함! 따라서 script가 그대로 출력된다.  
+그러나 정말 필요한 내용도 날려버리기에 아래 함수를 주로 이용한다.  
+* strip()_tags : 문자열에서 html 태그와 php 태그를 제거한다.  
+
+
+
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>XSS</title>
+  </head>
+  <body>
+    <h1>Cross site scripting</h1>
+    <?php
+    echo htmlspecialchars('<script>alert("babo");</script>');
+    ?>
+  </body>
+</html>
+```  
+
+
+## 파일 경로 보호  
+
+공격자는 URL를 통해 민감한 파일의 내용을 볼 수 있도록 공격 할 수 있다.  
+보호 방법은 아래와 같다.  
+```
+<?php
+function print_description(){
+  if(isset($_GET['id'])){
+    $basename = basename($_GET['id']);
+    echo htmlspecialchars(file_get_contents("data/".$basename));
+  } else {
+    echo "Hello, PHP";
+  }
+}
+?>
+```  
+```
+<?php
+  unlink('data/'.basename($POST['id']); // id값을 받아서 해당 id에 해당하는 파일만 열 수 있도록!
+  header('Location: /index.php'); // redirect
+?>
+```  
