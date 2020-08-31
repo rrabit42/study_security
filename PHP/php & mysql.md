@@ -250,6 +250,34 @@ while($row = mysqli_fetch_array($result)) {
 }
 ```  
 
+### 보안  
+#### 입력 공격의 차단  
+* 입력 공격 차단 - filtering  
+```
+$filtered_id = mysqli_real_escape_string($_GET['id']);  
+```
+* 출력 공격 차단 - escaping  
+
+#### SQL injection 차단(입력 공격)  
+```mysqli_multi_query($conn, $sql);``` : 복수의 sql문을 실행시켜주지만 보안적인 문제가 아주 많음  
+
+ex)
+```{.sql}
+// 일반 sql문
+INSERT INTO topic(title, description, created) VALUES('Hehe', 'haha', NOW() )
+
+// 공격(시간을 NOW()가 아닌 내가 설정한 시간으로)
+// ; 으로 끝나고 뒤에 '--'를 이용해 NOW()를 주석처리 시킨다.
+INSERT INTO topic(title, description, created) VALUES('Hehe', 'haha', '2018-1-1 00:00:00');-- ', NOW() )
+```  
+즉, 화면의 input에서 description 입력할 때 **haha', '2018-1-1 00:00:00');** 이렇게 쓰면 저렇게 sql문이 생성되서 들어가는것! 다중 sql문 입력을 허용할 때 이 공격이 가능하다.  
+
+따라서 ```mysqli_query();```를 쓰자!  
+
+#### Cross site scripting 차단(출력 공격)  
+```htmlspecialchars()``` 함수를 이용해 <script> tag 등 문법적인 역할이 있는 문자들을 해석하지 않고 그대로 출력해준다.  
+   ex) <,> -> &lt, &gt
+
 
 
 
