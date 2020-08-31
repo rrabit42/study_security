@@ -1,4 +1,9 @@
 # PHP  
+생활코딩 강의들 참조  
+[WEB2 - PHP](https://opentutorials.org/course/3130)  
+[PHP](https://opentutorials.org/course/3018)  
+[WEB3 - PHP & MySQL](https://opentutorials.org/course/3167)  
+[PHP문법정리](https://opentutorials.org/course/779)  
 
 ## PHP의 원리
 
