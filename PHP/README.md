@@ -288,6 +288,34 @@ cancat("parameter", "argument");
 ...
 ```  
 
+## 변수 함수  
+함수이름으로 **$name**이라는 것은 위에서 설명한 제약사항에 따라 적절치 않지만 때때로 실행 가능한 형태일 수도 있다. 만약 **my_function()** 이라는 함수가 이미 정의되어 있고 **$name='my_function';** 인 $name이라는 변수를 선언하고 **$name();** 을 실행시키면 $name이라는 값이 my_function이기 때문에 my_function함수가 호출된다.  
+
+## pass-by-value, pass-by-reference  
+```
+// 값으로 전달(pass-by-value)
+<?php
+function increment($value, $amount=1) {
+    $value = $value + $amount;
+}
+ 
+$value=10;
+increment($value);
+echo $value; // 10
+?>
+ 
+// 참조로 전달(pass-by-reference)
+<?php
+function increment(&$value, $amount=1) {  // &로 참조의 의미, $로 변수의 의미를 나타낸다.
+    $value = $value + $amount;
+}
+ 
+$value=10;
+increment($value);
+echo $value; // 11
+?>
+```  
+
 ## 복합 대입 연산자  
 문자열 연산자도 복합 대입 연산자 사용이 가능하다.  
 ```
