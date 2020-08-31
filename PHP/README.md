@@ -17,64 +17,53 @@ php라는 프로그램은 htdocs라는 디렉토리 안의 index.php파일을 �
 => php가 <?php ... ?> 안에 있는 문법을 해석할 때마다 리로드할 때 마다 그 안에 있는 정보가 달라질 수 있음(동적으로 정보 생성)  
 => php가 해석하기 원하면 저 꺽쇄안에 반드시 넣어줘야함!  
 
+## PHP 태그 스타일  
 
-## PHP의 데이터 타입  
-https://www.php.net/manual/en/language.types.intro.php  
+* XML 스타일  
+```<?php echo 'Hello'; ?>```  
+항상 지원되는 방식. 일반적으로 권장되는 스타일.  
+ 
+* 짧은 스타일  
+```<? echo 'Hello'; ?>```  
+기본적으로 지원하지 않는 환경이 많음.  
+ 
+* 스크립트 스타일  
+```<script language='php'> echo 'Hello' </script>```  
+JavaScript, VBScript 스타일로 HTML 편집기에서 다른 태그 스타일을 사용할 수 없을 경우에 사용  
+ 
+* ASP 스타일  
+```<% echo 'Hello'; %>```  
+ASP나 ASP.NET 스타일로 config 파일에서 asp_tags를 활성화하면 사용할 수 있음.  
+ASP편집기를 쓰는 것이 아닌 이상 굳이 사용할 필요는 없다.  
 
+* ```<?=$var?>```  
+만약 php의 변수 하나만 출력하고 싶다면 위와 같이 사용할 수도 있다.  
 
-* Number & Arithmetic Operator  
-숫자와 산술 연산자  
-
-```
-<!doctype html>
-<html>
-<body>
-  <h1>Number & Arithmetic Operator</h1>
-  <h2>1+1</h2>    // html은 연산자 계산하지 않고 그대로 출력
-  <?php
-    echo 1+1;     // 2
-  ?>
-  <h2>2-1</h2>
-  <?php
-    echo 2-1;     // 1
-  ?>
-  <h2>2*2</h2>
-  <?php
-    echo 2*2;     // 4
-  ?>
-  <h2>4/2</h2>
-  <?php
-    echo 4/2;     // 2
-  ?>
-</body>
-</html>
+## echo와 주석처리  
+```{.php}
+/* 이 부분은 주석입니다.
+여러 줄을 주석처리 할 수 있습니다.*/
+echo '<p>Hello World!</p>'; // ''방식
+echo "<p>Hello World!</p>"; // ""방식
+echo '<p>Hello '.'World</p>' // 문자열 연결
 ```  
-
-* Number & Arithmetic Operator  
-문자열과 문자열의 처리  
-
-```
-<!doctype html>
-<html>
-<body>
-  <h1>String & String Operator</h1>
-  <?php
-    echo "Hello \"w\"ord";
-  ?>
-  <h2>concatenation operator</h2>
-  <?php
-    echo "Hello "."world";        // 문자열 결합, concatenation operator
-  ?>
-  <h2>String length function</h2>
-  <?php
-    echo strlen("Hello world");   // 문자열의 길이
-   ?>
-</body>
-</html>
+* theEnd  
+echo에 엔터키를 포함하여 입력하고 싶은 경우 아래와 같이 사용할 수도 있다. (PHP 4에서 추가됨)  
+```{.php}
+echo <<< theEnd
+line1
+line2
+line3
+theEnd
 ```  
+theEnd는 임의로 지정할 수 있다. 위와 같이 입력하게 되면 theEnd라는 문자를 만날 때까지 엔터키를 포함한 문자열을 입력할 수 있다.  
 
-+ single quote('')와 double quote("")의 차이  
-```
+* 문자열 내에서 따옴표 사용  
+1. 서로 다른 따옴표를 쓰는 방법 : 작은 따옴표를 쓰고 싶다면 큰 따옴표로 감싸고 큰 따옴표를 쓰고 싶으면 작은 따옴표로 감싼다.  
+2. 이스케이프 시키는 방법 : 따옴표 앞에 역슬래시(\)를 추가하여 이스케이핑시켜 사용한다.  
+
+* single quote('')와 double quote("")의 차이  
+```{.php}
 <?php
  // 변수삽입
  $name = "friday"; //삽입 될 변수
@@ -106,10 +95,66 @@ https://www.php.net/manual/en/language.types.intro.php
 > double quote는 파싱이 필요한 데이터가 있는지 확인 후 변환하는 과정을 거처 문자열로 처리하게 되면서 나타나게 된다.  
 > 즉, single quote는  있는 그대로 문자열로 처리, double quote 변환 작업 후 문자열로 처리 되는 특성을 가지고 있다.  
 
-## 변수  
-변수 이름 앞에 $를 붙인다.  
 
-```
+## PHP의 데이터 타입  
+https://www.php.net/manual/en/language.types.intro.php  
+
+
+* Number & Arithmetic Operator  
+숫자와 산술 연산자  
+
+```{.php}
+<!doctype html>
+<html>
+<body>
+  <h1>Number & Arithmetic Operator</h1>
+  <h2>1+1</h2>    // html은 연산자 계산하지 않고 그대로 출력
+  <?php
+    echo 1+1;     // 2
+  ?>
+  <h2>2-1</h2>
+  <?php
+    echo 2-1;     // 1
+  ?>
+  <h2>2*2</h2>
+  <?php
+    echo 2*2;     // 4
+  ?>
+  <h2>4/2</h2>
+  <?php
+    echo 4/2;     // 2
+  ?>
+</body>
+</html>
+```  
+
+* Number & Arithmetic Operator  
+문자열과 문자열의 처리  
+
+```{.php}
+<!doctype html>
+<html>
+<body>
+  <h1>String & String Operator</h1>
+  <?php
+    echo "Hello \"w\"ord";
+  ?>
+  <h2>concatenation operator</h2>
+  <?php
+    echo "Hello "."world";        // 문자열 결합, concatenation operator
+  ?>
+  <h2>String length function</h2>
+  <?php
+    echo strlen("Hello world");   // 문자열의 길이
+   ?>
+</body>
+</html>
+```  
+
+## 변수  
+변수 이름 앞에 $를 붙인다. 따로 자료형을 선언할 필요는 없으며, 선언과 동시에 초기화 해주면 알아서 적절한 자료형이 결정된다.  
+
+```{.php}
 <!DOCTYPE html>
 <html>
   <body>
@@ -121,6 +166,46 @@ https://www.php.net/manual/en/language.types.intro.php
   </body>
 </html>
 ```  
+1. php는 형 강도가 매우 약한 언어이다.  
+2. 형 변환은 C언어 처럼 $a=(double)$b; 와 같은 형태로 사용한다.  
+3. 가변 변수 : 변수의 이름을 새로운 변수에 저장할 수 있으며 $$을 통해서 그 값에 접근, 제어할 수 있다.  
+```{.php}
+$a = 0;
+$var = 'a';   // $a는 $$var로 사용할 수 있게 된다.
+$$var = 5;    // $a = 5;와 같다.
+echo $a;      // 5
+/*  $var의 값은 문자 a가 된다.
+    그렇다면 $$var는??? 신기하게도 php에서는
+    $$var를 $a로 인식할 수 있게 된다. */
+```  
+4. 상수  
+```
+define('PI', 3.14); // 상수의 정의
+echo PI // 상수는 $를 붙일 필요가 없다.
+```  
+
+### 변수의 범위  
+* 수퍼글로벌 변수 - 스크립트 전역(함수 내외부)  
+* 상수 - 스크립트 전역  
+* 전역 변수 - 함수 외부  
+* 지역 변수(함수 안에서 정의된 변수) - 함수 내부  
+* 함수 안에서 전역으로 정의된 변수 - 함수 내부(단, 값이 유지되어 다음에 사용할 수 있음)  
+* 수퍼글로벌 변수 리스트  
+
+```{.php}
+$GLOBALS        // global 키워드 처럼 함수 안에서 글로벌 변수에 접근 가능
+                // $GLOBALS['val']
+$_SERVER        // 서버 환경 변수의 배열
+ 
+$_GET, $_POST   // 폼에서 get 또는 post 메소드로 전달된 값의 배열
+$_COOKIE, $_SESSION // 쿠키와 세션 변수의 배열
+$_FILES         // 파일 업로드와 관련된 변수의 배열
+$_REQUEST       // 사용자가 입력한 변수의 배열
+                // $_GET, $_POST, $_COOKIE를 포함
+		
+$_ENV           // 환경 변수의 배열
+```
+
 
 ## 함수  
 
@@ -203,6 +288,28 @@ cancat("parameter", "argument");
 ...
 ```  
 
+## 복합 대입 연산자  
+문자열 연산자도 복합 대입 연산자 사용이 가능하다.  
+```
+$a .= $b;
+$a = $a . $b;
+```  
+
+## 참조 연산자  
+```{.php}
+$a = 5;
+$b = $a;
+$a = 7; // $b는 바뀌지 않는다.(일반적인 예)
+ 
+$a = 5;
+$b = &$a; // 참조연산자
+$a = 7; // $a, $b 모두 7
+ 
+unset($a); // $a값이 없어진다. $b=7은 유지된다.
+```  
+참조연산자는 포인터라기보다는 별명에 가깝다.
+
+
 ## 비교 연산자  
 
 ### [Comparison Operators](https://www.php.net/manual/en/language.operators.comparison.php)  
@@ -219,6 +326,7 @@ cancat("parameter", "argument");
 |$a >= $b|Greater than or equal to|TRUE if $a is greater than or equal to $b.|
 |$a <=> $b|Spaceship|An integer less than, equal to, or greater than zero when $a is less than, equal to, or greater than $b, respectively. Available as of PHP 7. (즉, $a - $b 값을 돌려준다)|
 
+ex) 0 == false 지만 0 === flase는 아니다. 0은 int이고, false는 boolean이기 때문!  
 
 ### [Type Juggling](https://blog.lael.be/post/1993)    
 = 자동 자료형변환 = Auto Typecasting = Implicit Typecasting  
@@ -274,6 +382,14 @@ echo 'KRW : ' . $my_won . ' WON';
 > ```string(5) "hello"``` : 5개의 문자로 이루어진 문자열이고, 값은 hello입니다.  
 > ```array(2) { [0]=> int(1) [1]=> float(1.1) }``` : 2개의 값을 가진 배열이고, 첫번째 값은 정수 1, 두번째 값은 실수 1.1입니다.  
 > ```bool(true)``` : boolean이고, 값은 true입니다.  
+
+
+## 실행  
+서버의 커맨드라인에서 실행하고 싶은 경우는 `` 사이에 입력한다.  
+```
+$out = `ls -al`;
+echo '<pre>'.$out.'</pre>';
+```
 
 
 ## 조건문  
@@ -352,3 +468,32 @@ while(expression)
     ?>
 ...
 ```
+
+## foreach문  
+배열을 쉽게 다루기 위해 사용하는 반복문  
+```{.PHP}
+// 숫자 인덱스 배열
+foreach($array as $item) {
+    echo $item." ";
+}
+ 
+// 연관 배열
+foreach($array as $key => $value) {
+    echo "$key : $value".'<br />';
+}
+```  
+
+## 대체 제어 구조 문법  
+{ 대신에 : 를 사용하고 } 대신에 새로운 키워드를 사용할 수 있다.  
+키워드 : endif, endswitch, endwhile, endfor, endforeach  
+do while 문은 대체 문법이 존재하지 않는다.  
+```
+if($result == 0) :
+    echo 'exit';
+    exit;
+endif;
+```  
+위 코드는 exit의 예제 코드와 완전히 동일하다.  
+
+## exit  
+exit을 사용하면 php 스크립트를 끝낼 수 있다.  
