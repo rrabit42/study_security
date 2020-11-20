@@ -66,6 +66,8 @@ int FLAGS : 파일에 대한 열기 옵션
 그 외: O_CREAT 옵션 사용 시 파일이 생성될 때 지정되는 파일의 권한이다.  
 return 값은 정상적으로 open하면 file descriptor의 값이 반환되고, 실패하면 -1이 반환된다.  
 
+* '/home/mistake/password'를 읽기모드로 password 파일의 소유자만 읽을 수 있도록 fd를 설정하고, 파일 읽기에 실패하면 can't open~~~ 출력  
+
 * operator priority 때문에 크기 비교(<)를 먼저한다. open()함수는 성공하니 file descriptor를 반환할 것이고, 반환 값은 양수이다.  
 때문에 크기 비교에서 false값(C에서 false는 0이다)이 fd에 최종적으로 들어가게 된다.  
 **연산자 우선순위에서 =가 대부분 제일 낮기 때문에 마지막으로 판단해주면 된다.**  
@@ -85,8 +87,18 @@ pw_buf2는 xor()함수를 거치는데, 여기서 각 원소는 XORKEY 즉, 1과
 0은 0x30 110000  
 1은 0x31 110001(X, 이건 문자 1)  
 
+숫자 1은 0000001  
 A는 0x41 이므로 1000001  
 @는 0x40 이므로 1000000  
+즉 1 xor A == @  
+
+2.  
+pw_buf에는 AAAAAAAAAA
+pw_buf2에는 @@@@@@@@@@ 를 넣어주면 된다.  
+
+3.  
+flag는
+Mommy, the operator priority always confuses me :(  
 
 [참고](https://www.ibm.com/support/knowledgecenter/ko/ssw_aix_71/network/conversion_table.html)  
 
