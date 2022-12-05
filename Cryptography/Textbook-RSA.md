@@ -47,6 +47,20 @@ double_flag = int(p.recvline()[:-1])
 flag = double_flag // 2
 
 log.info("REAL FLAG: " + str(long_to_bytes(flag)))
+```  
+
+나의 노가다를 굳이 코드로 쓴다면 아래와 같을 듯(input 값으로 복붙할 수 있게)  
+```
+#!/usr/bin/python3
+from Crypto.Util.number import bytes_to_long, inverse, long_to_bytes
+
+N = int(input('N:'))
+e = int(input('e:'))
+flag_enc = int(input('flag_enc:'))
+flag_enc프라임 = flag_enc*pow(2, e, N)%N
+print('give this:', long_to_bytes(flag_enc프라임).hex())
+print('flag:', long_to_bytes(int(input('give decrypt:'))*inverse(2, N)%N))
+# 2로 나누는 것은 2의 역원을 곱하는 것이다.
 ```
 
 ## 출처  
