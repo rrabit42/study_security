@@ -6,7 +6,7 @@
 [출처2](https://roytravel.tistory.com/113)  
 
 <img width="761" alt="image" src="https://user-images.githubusercontent.com/46364778/205741480-6cd97e39-3f6a-4d5a-962f-000ae866b854.png">  
-<img width="761" alt="image" src="https://user-images.githubusercontent.com/46364778/205741531-e75497f1-eee4-421e-a758-de23eb28c40a.png">  
+<img src="https://user-images.githubusercontent.com/46364778/205742796-06b08ab9-6699-4718-aab3-16e7e0a5337e.png">    
 
 * 공격자가 ciphertext를 선택  
 * 선택한 ciphertext에 대해서 private key를 가진 사람한테 decryption 요청~~(ex) 사용자가 핸드폰 잠시 두고 간 사이에 공격자가 몰래 Decryption 시도해보기ㅋㅋㅋ)~~  
