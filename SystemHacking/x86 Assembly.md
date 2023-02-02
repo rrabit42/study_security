@@ -134,3 +134,33 @@ ex) 브라우저, 유튜브, 게임, 프로그래밍 등, 리눅스에서 루트
 중요한 몇가지만  
 <img width="645" alt="image" src="https://user-images.githubusercontent.com/46364778/216277111-c43f33b8-42a0-4fc9-ad8c-c70da43d653c.png">  
 
+
+---
+
+Quiz: x86 Assembly 1 풀이  
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/46364778/216285902-cc77a902-86f3-4402-bc88-35f01071fed3.png">  
+
+* Byte 만 불러오므로 rcx = 0x00일 때는 dl = 0x67  
+* rcx = 0x01 일 때는 dl = 0x55 (0x400000 + rcx = 0x400001) 이므로  
+* rcx가 0x19보다 커질때까지 반복되므로 0x20 = 32가 될때까지, 즉 0x30을 32개 바이트에 xor 하면 된다 -> memory에 있는 모든 바이트에서 0x30 xor하기  
+
+```
+memory = [
+    '0x67', '0x55', '0x5c', '0x53', '0x5f', '0x5d', '0x55', '0x10', '0x44', '0x5f', '0x10', '0x51',
+    '0x43', '0x43', '0x55', '0x5d', '0x52', '0x5c', '0x49', '0x10', '0x47', '0x5f', '0x42', '0x5c',
+    '0x54', '0x11', '0x00', '0x00', '0x00', '0x00', '0x00', '0x00'
+]
+xor = '0x30'
+result = ''
+
+for m in memory:
+  hex = int(m,16) ^ int(xor,16)
+  # print(hex)
+  w = chr(hex)
+  # print(w)
+  result += w
+
+print(result)
+```  
+
+Quiz: x86 Assembly 2 풀이  
